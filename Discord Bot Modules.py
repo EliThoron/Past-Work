@@ -131,3 +131,6 @@ async def CoinFlip(ctx):
         await ctx.send("Heads")
     else:
         await ctx.send("Tails")
+
+        
+client.run(constants.AUTH_TOKEN)
