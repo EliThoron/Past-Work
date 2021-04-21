@@ -90,3 +90,44 @@ async def on_voice_state_update(member, before, after):
         
         
         
+#Random number generator
+@client.command(aliases=['Rand', 'Random', 'random', 'RAND', 'RANDOM', 'rand'], brief = 'I\'ll make a random number for you!', description = 'Put one number to get a random number between it and 1. Put 2 numbers to get a random number between the 2. Put a third one on top of the two to add decimal places based on thay number. Eg \"!random 0 10 4\" can give you 3.9471.')
+async def randomnumber(ctx, *args):
+    #checks if it contains only integers
+    if contains_only_integers(args):
+        #checks length
+        if len(args) >= 2: 
+            #sorts the data
+            argslist = sorted([abs(int(args[0])), abs(int(args[1]))])
+            if len(args) == 2:
+                argslist.append(0)
+            else:
+                argslist.append(args[2])
+            #sends random number
+            await ctx.send(f'{random.randint(argslist[0], argslist[1]) + round(random.random(), abs(int(argslist[2])))}')
+        elif len(args) == 1:
+            await ctx.send(f'{random.randint(0, abs(int(args[0])))}')
+        else:
+            await ctx.send("Didn't provide range for random number.")
+    else:
+        await ctx.send("Remove all non-integer characters and try again.")
+
+#checks if all the varibles are integers
+def contains_only_integers(args):
+    contains_nonintegers = True
+    for values in args:
+        while contains_nonintegers:
+            try:
+                inttest = int(values)
+                break
+            except (TypeError, ValueError):
+                contains_nonintegers = False
+    return contains_nonintegers
+
+#Coinflip
+@client.command(aliases=['Coin', 'coin', 'COIN', 'coinflip', 'COINFLIP', 'flip', 'Flip', 'FLIP'], description = 'I\'ll flip a coin and tell you what happens!')
+async def CoinFlip(ctx):
+    if random.randint(1, 2) == 1:
+        await ctx.send("Heads")
+    else:
+        await ctx.send("Tails")
